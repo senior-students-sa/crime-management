@@ -1,8 +1,85 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode for Tailwind v4 */
+@variant dark (&:where(.dark, .dark *));
+
+/*
+ * LIGHT MODE COLOR PALETTE
+ * ========================
+ * Background:     #ffffff (pure white)
+ * Surface:        #f8fafc (slate-50, cards)
+ * Surface Alt:    #f1f5f9 (slate-100, subtle sections)
+ * Border:         #e2e8f0 (slate-200)
+ * Border Hover:   #cbd5e1 (slate-300)
+ * Text Primary:   #0f172a (slate-900)
+ * Text Secondary: #475569 (slate-600)
+ * Text Muted:     #64748b (slate-500)
+ * Accent:         #dc2626 (red-600, crimson)
+ * Accent Hover:   #b91c1c (red-700)
+ * Accent Light:   #fef2f2 (red-50)
+ * Accent Muted:   #fee2e2 (red-100)
+ */
+
+/* Light mode (default) */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --background-alt: #f8fafc;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-elevated: #f8fafc;
+  --surface-sunken: #f1f5f9;
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --muted: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  /* Accent colors */
+  --crimson: #dc2626;
+  --crimson-hover: #b91c1c;
+  --crimson-light: #fef2f2;
+  --crimson-muted: #fee2e2;
+  --crimson-glow: rgba(220, 38, 38, 0.15);
+  --crimson-shadow: rgba(220, 38, 38, 0.1);
+  --card-border: #e2e8f0;
+  --circuit-line: rgba(220, 38, 38, 0.06);
+  
+  /* Component backgrounds */
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --hero-bg: linear-gradient(180deg, #ffffff 0%, #fef7f7 50%, #fef2f2 100%);
+  --hero-bg-solid: #fefefe;
+}
+
+/* Dark mode */
+.dark {
+  --background: #0a0a0a;
+  --background-alt: #0f0f0f;
+  --foreground: #ededed;
+  --surface: #0f0f0f;
+  --surface-elevated: #141414;
+  --surface-sunken: #080808;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --muted: #9ca3af;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  /* Accent colors */
+  --crimson: #dc2626;
+  --crimson-hover: #b91c1c;
+  --crimson-light: rgba(220, 38, 38, 0.15);
+  --crimson-muted: rgba(220, 38, 38, 0.1);
+  --crimson-glow: rgba(220, 38, 38, 0.4);
+  --crimson-shadow: rgba(220, 38, 38, 0.25);
+  --card-border: rgba(220, 38, 38, 0.25);
+  --circuit-line: rgba(220, 38, 38, 0.12);
+  
+  /* Component backgrounds */
+  --nav-bg: rgba(10, 10, 10, 0.9);
+  --hero-bg: #0a0a0a;
+  --hero-bg-solid: #0a0a0a;
 }
 
 @theme inline {
@@ -12,15 +89,148 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================
+   CIRCUIT LINES BACKGROUND
+   ========================================== */
+
+.circuit-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light mode - very subtle gray circuit lines */
+.circuit-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%2394a3b8' stroke-width='0.4' opacity='0.15' fill='none'%3E%3Cpath d='M0 20 L40 20 M60 20 L120 20'/%3E%3Cpath d='M0 40 L20 40 M80 40 L120 40'/%3E%3Cpath d='M20 0 L20 60 M20 80 L20 120'/%3E%3Cpath d='M40 40 L40 80 M100 0 L100 40'/%3E%3Cpath d='M60 60 L60 120'/%3E%3Cpath d='M80 20 L80 60'/%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23dc2626' opacity='0.25'/%3E%3Ccircle cx='60' cy='40' r='1.5' fill='%23dc2626' opacity='0.25'/%3E%3Ccircle cx='80' cy='80' r='1.5' fill='%23dc2626' opacity='0.25'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Dark mode - red circuit lines */
+.dark .circuit-bg::before {
+  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23dc2626' stroke-width='0.3' opacity='0.15' fill='none'%3E%3Cpath d='M0 20 L40 20 M60 20 L120 20'/%3E%3Cpath d='M0 40 L20 40 M80 40 L120 40'/%3E%3Cpath d='M20 0 L20 60 M20 80 L20 120'/%3E%3Cpath d='M40 40 L40 80 M100 0 L100 40'/%3E%3Cpath d='M60 60 L60 120'/%3E%3Cpath d='M80 20 L80 60'/%3E%3Ccircle cx='20' cy='20' r='1.5' fill='%23dc2626' opacity='0.3'/%3E%3Ccircle cx='60' cy='40' r='1.5' fill='%23dc2626' opacity='0.3'/%3E%3Ccircle cx='80' cy='80' r='1.5' fill='%23dc2626' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.circuit-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================
+   CARD CIRCUIT OVERLAY
+   ========================================== */
+
+/* Light mode - no circuit overlay (clean cards) */
+.card-circuit::after {
+  content: none;
+}
+
+/* Dark mode - red circuit on cards */
+.dark .card-circuit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23dc2626' stroke-width='0.25' opacity='0.2' fill='none'%3E%3Cpath d='M0 16 L32 16 M48 16 L80 16'/%3E%3Cpath d='M16 0 L16 32 M48 48 L48 80'/%3E%3Cpath d='M32 32 L32 64'/%3E%3Ccircle cx='16' cy='16' r='1' fill='%23dc2626' opacity='0.35'/%3E%3Ccircle cx='48' cy='48' r='1' fill='%23dc2626' opacity='0.35'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ==========================================
+   BUTTON GLOW / SHADOW
+   ========================================== */
+
+/* Light mode - elegant shadow with subtle red tint */
+.glow-crimson {
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(220, 38, 38, 0.15),
+    0 8px 24px rgba(220, 38, 38, 0.1);
+}
+
+.glow-crimson:hover {
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 6px 16px rgba(220, 38, 38, 0.2),
+    0 12px 32px rgba(220, 38, 38, 0.15);
+}
+
+/* Dark mode - red glow */
+.dark .glow-crimson {
+  box-shadow: 0 0 20px var(--crimson-glow), 0 0 40px var(--crimson-muted);
+}
+
+.dark .glow-crimson:hover {
+  box-shadow: 0 0 24px var(--crimson-glow), 0 0 48px var(--crimson-muted);
+}
+
+/* ==========================================
+   CARD SHADOWS
+   ========================================== */
+
+/* Light mode - minimal/no shadow */
+.card-glow {
+  box-shadow: none;
+}
+
+.card-glow:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Dark mode - red glow */
+.dark .card-glow {
+  box-shadow: 0 0 0 1px var(--card-border), 0 0 24px var(--crimson-muted);
+}
+
+.dark .card-glow:hover {
+  box-shadow: 0 0 0 1px var(--crimson), 0 0 32px var(--crimson-glow);
+}
+
+/* ==========================================
+   HERO DASHBOARD FRAME
+   ========================================== */
+
+/* Light mode - clean subtle shadow */
+.hero-dashboard-glow {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Dark mode - red glow */
+.dark .hero-dashboard-glow {
+  box-shadow:
+    0 0 0 1px rgba(220, 38, 38, 0.35),
+    0 0 24px rgba(220, 38, 38, 0.25),
+    0 0 48px rgba(220, 38, 38, 0.15),
+    0 0 80px rgba(220, 38, 38, 0.08);
+}
+
+/* ==========================================
+   LIGHT MODE SPECIFIC UTILITIES
+   ========================================== */
+
+/* Hero gradient background for light mode */
+.hero-gradient-light {
+  background: linear-gradient(180deg, #ffffff 0%, #fefafa 40%, #fef2f2 100%);
+}
+
+/* Subtle inner glow for light mode cards */
+.light-card-inner {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Text shadow for light mode headlines */
+.light-text-shadow {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
